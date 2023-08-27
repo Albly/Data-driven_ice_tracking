@@ -26,7 +26,6 @@ def min_max_scaller(radar_data, new_min = 0, new_max = 1 ):
     normed_data = (radar_data - v_min)/(v_max - v_min)*(new_max - new_min) + new_min
     return normed_data
 
-
 def mean_scaller(radar_data):
     v_min  = np.min(radar_data, (1,2)).reshape(-1,1,1)
     v_max  = np.max(radar_data, (1,2)).reshape(-1,1,1)
@@ -35,13 +34,17 @@ def mean_scaller(radar_data):
     normed_data = (radar_data - v_mean)/(v_max - v_min)
     return normed_data
 
-
 def standard_scaller(radar_data):
     v_mean = np.mean(radar_data, (1,2)).reshape(-1,1,1)
     v_std  = np.std(radar_data, (1,2)).reshape(-1,1,1)
 
     normed_data = (radar_data - v_mean)/v_std
     return normed_data
+
+def norm_scaller(radar_data, p = 2):
+    norms = np.sum(np.abs(radar_data)**p, (1,2))**(1/p)
+    norms = norms.reshape(-1,1,1)
+    return radar_data / norms
 
 def get_clear_data_idxs(radar_data, zero_th_percent , mask = None):
     '''
