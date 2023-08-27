@@ -17,6 +17,16 @@ def load_mask(mask_path):
     mask_norm = (mask - v_min)/(v_max - v_min)*(new_max - new_min) + new_min
     return mask_norm
 
+def min_max_scaller(radar_data, new_min = 0, new_max = 1 ):
+    v_min = np.min(radar_data, (1,2)).reshape(-1,1,1)
+    v_max = np.max(radar_data, (1,2)).reshape(-1,1,1)
+    new_max = np.array(new_max).reshape(-1,1,1)
+    new_min = np.array(new_min).reshape(-1,1,1)
+
+    normed_data = (radar_data - v_min)/(v_max - v_min)*(new_max - new_min) + new_min
+    return normed_data
+
+
 def get_clear_data_idxs(radar_data, zero_th_percent , mask = None):
     '''
     Returns radar idxs where number of zeros less then @zero_th_percent in percent
